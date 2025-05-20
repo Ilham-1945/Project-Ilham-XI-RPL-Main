@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request, send_from_directory, current_app
 from flask_login import login_user, logout_user, login_required, current_user
 from app.models import User, Formulir, db
 from functools import wraps
@@ -111,7 +111,7 @@ def formulir():
             ijazah_filename = None
             if ijazah and ijazah.filename != '':
                 filename = f"{current_user.username}_{ijazah.filename}"
-                upload_folder = os.path.join(os.getcwd(), 'uploads')
+                upload_folder = os.path.join(os.getcwd(),'app', 'static', 'uploads')
                 if not os.path.exists(upload_folder):
                     os.makedirs(upload_folder)
                 ijazah.save(os.path.join(upload_folder, filename))
@@ -152,23 +152,11 @@ def view_formulir():
     formulir = current_user.formulir  
     return render_template('auth/view_formulir.html', data=formulir)
 
-@auth.route('/upload_ijazah', methods=['POST'])
+@auth.route('/uploads/<path:filename>')
 @login_required
-def upload_ijazah():
-    ijazah = request.files.get('ijazah')
-    if ijazah and ijazah.filename != '':
-        filename = secure_filename(ijazah.filename)
-        upload_folder = os.path.join('static', 'uploads')
-        if not os.path.exists(upload_folder):
-            os.makedirs(upload_folder)
-        ijazah.save(os.path.join(upload_folder, filename))
-        # Update field di database
-        current_user.formulir.ijazah_filename = filename
-        db.session.commit()
-        flash('Ijazah berhasil diunggah', 'success')
-    else:
-        flash('Pilih file ijazah terlebih dahulu', 'error')
-    return redirect(url_for('auth.view_formulir'))
+def uploads(filename):
+    uploads_dir = os.path.join(current_app.root_path,'static', 'uploads')
+    return send_from_directory(uploads_dir, filename)
 
 @auth.route('/review/<int:user_id>', methods=['POST'])
 @login_required

@@ -87,7 +87,23 @@ def dashboard():
                             pending_forms=pending_forms,
                             accepted_forms=accepted_forms,
                             rejected_forms=rejected_forms)
-    return render_template('auth/dashboard.html')
+    page = request.args.get('page', 1, type=int)
+    per_page = 10  # items per page
+    search = request.args.get('search', '')
+    
+    if current_user.role == 'admin':
+        query = Formulir.query.join(User).filter(User.is_accepted.is_(None))
+        
+        if search:
+            query = query.filter(
+                db.or_(
+                    User.username.ilike(f'%{search}%'),
+                    Formulir.nama.ilike(f'%{search}%')
+                )
+            )
+        
+        pending_forms = query.paginate(page=page, per_page=per_page)
+        return render_template('auth/dashboard.html', pending_forms=pending_forms, search=search)
 
 @auth.route('/formulir', methods=['GET', 'POST'])
 @login_required

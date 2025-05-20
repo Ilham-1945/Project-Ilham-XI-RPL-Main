@@ -17,6 +17,15 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+@auth.route('/admin/dashboard')
+@login_required
+def admin_dashboard():
+    if current_user.role != 'admin':
+        return redirect(url_for('auth.dashboard'))
+    pending_forms = Formulir.query.filter_by(status='pending').all()
+    all_forms = Formulir.query.all()  # <-- ini penting!
+    return render_template('admin_dashboard.html', pending_forms=pending_forms, all_forms=all_forms)
+
 @auth.route('/')
 def index():
     if current_user.is_authenticated:

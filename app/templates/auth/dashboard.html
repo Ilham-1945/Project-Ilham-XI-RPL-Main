@@ -5,47 +5,94 @@
 {% block content %}
 <div class="container mt-4">
     {% if current_user.role == 'admin' %}
-        <!-- Admin View -->
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">Pending Applications</h4>
-            </div>
-            <div class="card-body">
-                {% if pending_forms %}
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Username</th>
-                                <th>Name</th>
-                                <th>Score</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for form in pending_forms %}
-                            <tr>
-                                <td>{{ form.user.username }}</td>
-                                <td>{{ form.nama }}</td>
-                                <td>{{ form.nilai }}</td>
-                                <td>
-                                    <form action="{{ url_for('auth.review_application', user_id=form.user.id) }}" method="POST" class="d-inline">
-                                        <input type="hidden" name="action" value="accept">
-                                        <button class="btn btn-success btn-sm">Accept</button>
-                                    </form>
-                                    <form action="{{ url_for('auth.review_application', user_id=form.user.id) }}" method="POST" class="d-inline ms-1">
-                                        <input type="hidden" name="action" value="reject">
-                                        <button class="btn btn-danger btn-sm">Reject</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                {% else %}
-                    <p class="text-muted">No pending applications</p>
-                {% endif %}
-            </div>
+    <!-- Admin View -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Pending Applications</h4>
         </div>
+        <div class="card-body">
+            {% if pending_forms %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Name</th>
+                            <th>Score</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for form in pending_forms %}
+                        <tr>
+                            <td>{{ form.user.username }}</td>
+                            <td>{{ form.nama }}</td>
+                            <td>{{ form.nilai }}</td>
+                            <td>
+                                <form action="{{ url_for('auth.review_application', user_id=form.user.id) }}" method="POST" class="d-inline">
+                                    <input type="hidden" name="action" value="accept">
+                                    <button class="btn btn-success btn-sm">Accept</button>
+                                </form>
+                                <form action="{{ url_for('auth.review_application', user_id=form.user.id) }}" method="POST" class="d-inline ms-1">
+                                    <input type="hidden" name="action" value="reject">
+                                    <button class="btn btn-danger btn-sm">Reject</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">No pending applications</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Semua Formulir User -->
+    <div class="card">
+        <div class="card-header bg-secondary text-white">
+            <h4 class="mb-0">Semua Formulir User</h4>
+        </div>
+        <div class="card-body">
+            {% if all_forms %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Name</th>
+                            <th>Score</th>
+                            <th>Status</th>
+                            <th>Detail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for form in all_forms %}
+                        <tr>
+                            <td>{{ form.user.username }}</td>
+                            <td>{{ form.nama }}</td>
+                            <td>{{ form.nilai }}</td>
+                            <td>
+                                {% if form.status == 'pending' %}
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                {% elif form.status == 'accepted' %}
+                                    <span class="badge bg-success">Accepted</span>
+                                {% elif form.status == 'rejected' %}
+                                    <span class="badge bg-danger">Rejected</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Unknown</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('auth.view_formulir', user_id=form.user.id) }}" class="btn btn-info btn-sm">Lihat</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="text-muted">Belum ada formulir yang masuk</p>
+            {% endif %}
+        </div>
+    </div>
     {% else %}
         <!-- User View -->
         <div class="card">

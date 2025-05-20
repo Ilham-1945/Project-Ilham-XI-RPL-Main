@@ -1,0 +1,18 @@
+1{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2>Halo, {{ user.username }}</h2>
+{% if formulir %}
+    <p><strong>Nama:</strong> {{ formulir.nama }}</p>
+    <p><strong>Alamat:</strong> {{ formulir.alamat }}</p>
+    <p><strong>Nilai:</strong> {{ formulir.nilai }}</p>
+    <p><strong>Status:</strong> 
+        {% if user.is_accepted is none %}Belum diproses
+        {% elif user.is_accepted %}Diterima ✅
+        {% else %}Ditolak ❌
+        {% endif %}
+    </p>
+{% else %}
+    <a href="{{ url_for('user.formulir') }}" class="btn btn-primary">Isi Formulir</a>
+{% endif %}
+{% endblock %}

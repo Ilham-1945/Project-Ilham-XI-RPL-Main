@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    {% if current_user.role == 'admin' %}
+        <!-- Admin View -->
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Pending Applications</h4>
+            </div>
+            <div class="card-body">
+                {% if pending_forms %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Name</th>
+                                <th>Score</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for form in pending_forms %}
+                            <tr>
+                                <td>{{ form.user.username }}</td>
+                                <td>{{ form.nama }}</td>
+                                <td>{{ form.nilai }}</td>
+                                <td>
+                                    <form action="{{ url_for('auth.review_application', user_id=form.user.id) }}" method="POST" class="d-inline">
+                                        <input type="hidden" name="action" value="accept">
+                                        <button class="btn btn-success btn-sm">Accept</button>
+                                    </form>
+                                    <form action="{{ url_for('auth.review_application', user_id=form.user.id) }}" method="POST" class="d-inline ms-1">
+                                        <input type="hidden" name="action" value="reject">
+                                        <button class="btn btn-danger btn-sm">Reject</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="text-muted">No pending applications</p>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <!-- User View -->
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">My Application</h4>
+            </div>
+            <div class="card-body">
+                {% if current_user.formulir %}
+                    <div class="alert alert-info">
+                        Status: 
+                        {% if current_user.is_accepted == None %}
+                            <span class="badge bg-warning">Pending</span>
+                        {% elif current_user.is_accepted %}
+                            <span class="badge bg-success">Accepted</span>
+                        {% else %}
+                            <span class="badge bg-danger">Rejected</span>
+                        {% endif %}
+                    </div>
+                    <a href="{{ url_for('auth.view_formulir') }}" class="btn btn-primary">View Form</a>
+                {% else %}
+                    <div class="alert alert-warning">
+                        You haven't submitted your application form yet.
+                    </div>
+                    <a href="{{ url_for('auth.formulir') }}" class="btn btn-primary">Submit Form</a>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

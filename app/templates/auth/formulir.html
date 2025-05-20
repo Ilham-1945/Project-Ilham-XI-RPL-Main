@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Formulir Pendaftaran{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Formulir Pendaftaran Siswa Baru</h4>
+        </div>
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                <!-- Data Pribadi -->
+                <h5 class="mb-3">Data Pribadi</h5>
+                <div class="mb-3">
+                    <label for="nama" class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-control" id="nama" name="nama" required>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
+                        <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
+                        <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="alamat" class="form-label">Alamat Rumah</label>
+                    <textarea class="form-control" id="alamat" name="alamat" rows="3" required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="asal_sekolah" class="form-label">Asal Sekolah</label>
+                    <input type="text" class="form-control" id="asal_sekolah" name="asal_sekolah" required>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="kelamin" class="form-label">Jenis Kelamin</label>
+                        <select class="form-select" id="kelamin" name="kelamin" required>
+                            <option value="">Pilih Jenis Kelamin</option>
+                            <option value="L">Laki-laki</option>
+                            <option value="P">Perempuan</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="agama" class="form-label">Agama</label>
+                        <select class="form-select" id="agama" name="agama" required>
+                            <option value="">Pilih Agama</option>
+                            <option value="Islam">Islam</option>
+                            <option value="Kristen">Kristen</option>
+                            <option value="Katolik">Katolik</option>
+                            <option value="Hindu">Hindu</option>
+                            <option value="Buddha">Buddha</option>
+                            <option value="Konghucu">Konghucu</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Data Akademik -->
+                <h5 class="mb-3 mt-4">Data Akademik</h5>
+                <div class="mb-3">
+                    <label for="jurusan" class="form-label">Jurusan yang Diminati</label>
+                    <select class="form-select" id="jurusan" name="jurusan" required>
+                        <option value="">Pilih Jurusan</option>
+                        <option value="RPL">Rekayasa Perangkat Lunak</option>
+                        <option value="TKJ">Teknik Sepeda Motor</option>
+                        <option value="MM">Hotel</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="nilai_rata" class="form-label">Nilai Rata-rata Rapor</label>
+                    <input type="number" class="form-control" id="nilai_rata" name="nilai_rata" 
+                           step="0.01" min="0" max="100" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="ijazah" class="form-label">Unggah Ijazah (PDF/Gambar)</label>
+                    <input type="file" class="form-control" id="ijazah" name="ijazah" 
+                           accept=".pdf,.jpg,.jpeg,.png" required>
+                    <div class="form-text">Ukuran maksimal file: 2MB</div>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Kirim Pendaftaran</button>
+                    <a href="{{ url_for('auth.dashboard') }}" class="btn btn-secondary">Kembali ke Dashboard</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,6 @@
+<p><strong>Status:</strong> 
+    {% if user.is_accepted is none %}Belum diproses
+    {% elif user.is_accepted %}Diterima ✅
+    {% else %}Ditolak ❌
+    {% endif %}
+</p>

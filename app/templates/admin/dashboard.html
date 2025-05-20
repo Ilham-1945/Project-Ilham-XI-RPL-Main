@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard Admin{% endblock %}
+{% block content %}
+<h2>Dashboard Admin</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Nama</th>
+            <th>Nilai</th>
+            <th>Status</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for f in formulirs %}
+        <tr>
+            <td>{{ f.user.username }}</td>
+            <td>{{ f.nama }}</td>
+            <td>{{ f.nilai }}</td>
+            <td>
+                {% if f.user.is_accepted is none %}Belum diproses
+                {% elif f.user.is_accepted %}Diterima ✅
+                {% else %}Ditolak ❌
+                {% endif %}
+            </td>
+            <td>
+                <a href="{{ url_for('admin.aksi', id=f.user.id, aksi='terima') }}" class="btn btn-success btn-sm">Terima</a>
+                <a href="{{ url_for('admin.aksi', id=f.user.id, aksi='tolak') }}" class="btn btn-danger btn-sm">Tolak</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

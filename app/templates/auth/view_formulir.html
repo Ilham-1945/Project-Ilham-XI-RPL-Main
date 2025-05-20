@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Lihat Formulir Pendaftaran{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Formulir Pendaftaran Siswa Baru</h4>
+        </div>
+        <div class="card-body">
+            <!-- Data Pribadi -->
+            <h5 class="mb-3">Data Pribadi</h5>
+            <div class="mb-3">
+                <label class="form-label">Nama Lengkap</label>
+                <div class="form-control-plaintext">{{ data.nama }}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Tempat Lahir</label>
+                    <div class="form-control-plaintext">{{ data.tempat_lahir }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Tanggal Lahir</label>
+                    <div class="form-control-plaintext">{{ data.tanggal_lahir }}</div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Alamat Rumah</label>
+                <div class="form-control-plaintext">{{ data.alamat }}</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Asal Sekolah</label>
+                <div class="form-control-plaintext">{{ data.asal_sekolah }}</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Jenis Kelamin</label>
+                    <div class="form-control-plaintext">
+                        {% if data.kelamin == 'L' %}
+                            Laki-laki
+                        {% elif data.kelamin == 'P' %}
+                            Perempuan
+                        {% else %}
+                            {{ data.kelamin }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Agama</label>
+                    <div class="form-control-plaintext">{{ data.agama }}</div>
+                </div>
+            </div>
+
+            <!-- Data Akademik -->
+            <h5 class="mb-3 mt-4">Data Akademik</h5>
+            <div class="mb-3">
+                <label class="form-label">Jurusan yang Diminati</label>
+                <div class="form-control-plaintext">
+                    {% if data.jurusan == 'RPL' %}
+                        Rekayasa Perangkat Lunak
+                    {% elif data.jurusan == 'TKJ' %}
+                        Teknik Sepeda Motor
+                    {% elif data.jurusan == 'MM' %}
+                        Hotel
+                    {% else %}
+                        {{ data.jurusan }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Nilai Rata-rata Rapor</label>
+                <div class="form-control-plaintext">{{ data.nilai_rata }}</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Ijazah</label>
+                {% if data.ijazah_filename %}
+                    <a href="{{ url_for('static', filename='uploads/' ~ data.ijazah_filename) }}" target="_blank">Lihat File</a>
+                {% else %}
+                    <span class="text-muted">Belum diunggah</span>
+                    <!-- Form upload ijazah -->
+                    <form method="POST" action="{{ url_for('auth.upload_ijazah') }}" enctype="multipart/form-data" class="mt-2">
+                        <input type="file" name="ijazah" accept=".pdf,.jpg,.jpeg,.png" required>
+                        <button type="submit" class="btn btn-sm btn-primary">Upload Ijazah</button>
+                    </form>
+                {% endif %}
+            </div>
+            <div class="d-grid gap-2">
+                <a href="{{ url_for('auth.dashboard') }}" class="btn btn-secondary">Kembali ke Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

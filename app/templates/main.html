@@ -1,34 +1,108 @@
 {% extends "base.html" %}
 
+{% block title %}PPDB SMK Karya Bangsa{% endblock %}
+
 {% block content %}
-<div class="container">
-    <h1 class="text-center mb-4">Welcome to the Main Page</h1>
-    {% if current_user.is_authenticated %}
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h3>Hello, {{ current_user.username }}!</h3>
-                        {% if not current_user.formulir %}
-                            <p class="mt-3">You haven't submitted your registration form yet.</p>
-                            <a href="{{ url_for('routes.formulir') }}" class="btn btn-primary">
-                                Fill Registration Form
-                            </a>
-                        {% else %}
-                            <p class="mt-3">You have already submitted your registration form.</p>
-                            <a href="{{ url_for('routes.view_formulir') }}" class="btn btn-info">
-                                View My Form
-                            </a>
-                        {% endif %}
-                    </div>
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="row align-items-center mb-5">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold text-primary">PPDB Online 2025/2026</h1>
+            <h2 class="h4 text-secondary mb-4">SMK Karya Bangsa</h2>
+            <p class="lead mb-4">Selamat datang di Portal Penerimaan Peserta Didik Baru (PPDB) SMK Karya Bangsa. Mari bergabung dengan kami untuk membangun masa depan yang lebih baik.</p>
+            {% if not current_user.is_authenticated %}
+            <div class="d-grid gap-2 d-md-flex">
+                <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg px-4">Daftar Sekarang</a>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-outline-secondary btn-lg px-4">Masuk</a>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-lg-6">
+            <img src="{{ url_for('static', filename='uploads/smk.png') }}" 
+                alt="SMK Karya Bangsa"
+                width="400" 
+                height="400"
+                style="object-fit: cover;">
+        </div>
+    </div>
+
+    <!-- Program Keahlian -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="text-center mb-4">Jurusan</h2>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Rekayasa Perangkat Lunak</h5>
+                    <p class="card-text">Program keahlian yang fokus pada pengembangan aplikasi, website, dan mobile apps.</p>
                 </div>
             </div>
         </div>
-    {% else %}
-        <p class="text-center">Please login to access the registration form.</p>
-        <div class="text-center">
-            <a href="{{ url_for('routes.login') }}" class="btn btn-primary">Login</a>
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Teknik Sepeda Motor</h5>
+                    <p class="card-text">Program keahlian yang mempelajari perawatan dan perbaikan sepeda motor.</p>
+                </div>
+            </div>
         </div>
-    {% endif %}
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Perhotelan</h5>
+                    <p class="card-text">Program keahlian yang mempelajari manajemen perhotelan dan hospitality.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Pendaftaran -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="text-center mb-4">Informasi Pendaftaran</h2>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Persyaratan</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Fotocopy Ijazah/SKL</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Fotocopy Rapor</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Fotocopy Kartu Keluarga</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Fotocopy Akta Kelahiran</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Pas Foto 3x4 (4 lembar)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Jadwal Pendaftaran</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><strong>Pembukaan:</strong> 1 Juni 2025</li>
+                        <li class="mb-2"><strong>Penutupan:</strong> 30 Juni 2025</li>
+                        <li class="mb-2"><strong>Pengumuman:</strong> 5 Juli 2025</li>
+                        <li class="mb-2"><strong>Daftar Ulang:</strong> 6-10 Juli 2025</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2 class="mb-4">Hubungi Kami</h2>
+            <p class="mb-2"><i class="bi bi-telephone-fill me-2"></i>Telp: 0815-4939-5400</p>
+            <p class="mb-2"><i class="bi bi-envelope-fill me-2"></i>Email: ppdb@smkkaryabangsa.sch.id</p>
+            <p><i class="bi bi-geo-alt-fill me-2"></i>Alamat: Jl. Pontianak - Sintang Km. 7(Sebelah Taman Makam Pahlawan Syuhada Pertiwi)Sintang, Indonesia, 78616</p>
+        </div>
+    </div>
 </div>
 {% endblock %}

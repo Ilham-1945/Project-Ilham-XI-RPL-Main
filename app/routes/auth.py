@@ -30,7 +30,7 @@ def admin_dashboard():
 def index():
     if current_user.is_authenticated:
         return redirect(url_for('auth.dashboard'))
-    return render_template('base.html')
+    return render_template('main.html')
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -77,33 +77,20 @@ def register():
 @login_required
 def dashboard():
     if current_user.role == 'admin':
-        users = User.query.filter_by(role='user').all()
+        # Admin view
         pending_forms = Formulir.query.join(User).filter(User.is_accepted.is_(None)).all()
         accepted_forms = Formulir.query.join(User).filter(User.is_accepted.is_(True)).all()
         rejected_forms = Formulir.query.join(User).filter(User.is_accepted.is_(False)).all()
-        
+        all_forms = Formulir.query.all()
         return render_template('auth/dashboard.html',
-                            users=users,
                             pending_forms=pending_forms,
                             accepted_forms=accepted_forms,
-                            rejected_forms=rejected_forms)
-    page = request.args.get('page', 1, type=int)
-    per_page = 10  # items per page
-    search = request.args.get('search', '')
-    
-    if current_user.role == 'admin':
-        query = Formulir.query.join(User).filter(User.is_accepted.is_(None))
-        
-        if search:
-            query = query.filter(
-                db.or_(
-                    User.username.ilike(f'%{search}%'),
-                    Formulir.nama.ilike(f'%{search}%')
-                )
-            )
-        
-        pending_forms = query.paginate(page=page, per_page=per_page)
-        return render_template('auth/dashboard.html', pending_forms=pending_forms, search=search)
+                            rejected_forms=rejected_forms,
+                            all_forms=all_forms)
+    else:
+        # Regular user view
+        return render_template('auth/dashboard.html', 
+                            user_form=current_user.formulir)
 
 @auth.route('/formulir', methods=['GET', 'POST'])
 @login_required

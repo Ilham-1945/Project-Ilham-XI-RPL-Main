@@ -93,26 +93,26 @@
         <!-- User View -->
         <div class="card">
             <div class="card-header">
-                <h4 class="mb-0">Formulir</h4>
+                <h4 class="mb-0">Formulir Pendaftaran</h4>
             </div>
             <div class="card-body">
                 {% if current_user.formulir %}
                     <div class="alert alert-info">
-                        Status: 
-                        {% if current_user.is_accepted == None %}
-                            <span class="badge bg-warning">Pending</span>
-                        {% elif current_user.is_accepted %}
-                            <span class="badge bg-success">Accepted</span>
-                        {% else %}
-                            <span class="badge bg-danger">Rejected</span>
+                        Status Pendaftaran: 
+                        {% if current_user.formulir.status == 'pending' %}
+                            <span class="badge bg-warning">Menunggu</span>
+                        {% elif current_user.formulir.status == 'accepted' %}
+                            <span class="badge bg-success">Diterima</span>
+                        {% elif current_user.formulir.status == 'rejected' %}
+                            <span class="badge bg-danger">Ditolak</span>
                         {% endif %}
                     </div>
-                    <a href="{{ url_for('auth.view_formulir') }}" class="btn btn-primary">View Form</a>
+                    <a href="{{ url_for('auth.view_formulir') }}" class="btn btn-primary">Lihat Formulir</a>
                 {% else %}
                     <div class="alert alert-warning">
-                        You haven't submitted your application form yet.
+                        Anda belum mengisi formulir pendaftaran.
                     </div>
-                    <a href="{{ url_for('auth.formulir') }}" class="btn btn-primary">Submit Form</a>
+                    <a href="{{ url_for('auth.formulir') }}" class="btn btn-primary">Isi Formulir</a>
                 {% endif %}
             </div>
         </div>

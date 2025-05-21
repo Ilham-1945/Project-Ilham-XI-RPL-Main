@@ -161,29 +161,24 @@ def uploads(filename):
     uploads_dir = os.path.join(current_app.root_path,'static', 'uploads')
     return send_from_directory(uploads_dir, filename)
 
-@auth.route('/review/<int:user_id>', methods=['POST'])
+@auth.route('/review_application/<int:user_id>', methods=['POST'])
 @login_required
-@admin_required
 def review_application(user_id):
-    try:
-        user = User.query.get_or_404(user_id)
-        action = request.form.get('action')
-        
-        if action == 'accept':
-            user.is_accepted = True
-            flash(f'Application for {user.username} has been accepted', 'success')
-        elif action == 'reject':
-            user.is_accepted = False
-            flash(f'Application for {user.username} has been rejected', 'warning')
-        else:
-            flash('Invalid action', 'error')
-            return redirect(url_for('auth.dashboard'))
-        
-        db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        flash(f'Error processing application: {str(e)}', 'error')
-    
+    if current_user.role != 'admin':
+        flash('Unauthorized access', 'danger')
+        return redirect(url_for('auth.dashboard'))
+
+    formulir = Formulir.query.filter_by(user_id=user_id).first_or_404()
+    action = request.form.get('action')
+
+    if action == 'accept':
+        formulir.status = 'accepted'
+        flash('Application accepted', 'success')
+    elif action == 'reject':
+        formulir.status = 'rejected'
+        flash('Application rejected', 'danger')
+
+    db.session.commit()
     return redirect(url_for('auth.dashboard'))
 
 @auth.route('/logout')

@@ -30,6 +30,7 @@ class Formulir(db.Model):
     agama = db.Column(db.String(20), nullable=False)
     jurusan = db.Column(db.String(10), nullable=False)
     nilai_rata = db.Column(db.Float, default=0.0)
+    status = db.Column(db.String(20), default='pending')  # Add this line
     ijazah_filename = db.Column(db.String(200))  # nama file ijazah yang diupload
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, server_default=db.func.now(), server_onupdate=db.func.now())

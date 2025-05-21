@@ -55,7 +55,6 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Nama Pengguna</th>
                         <th>Nama Lengkap</th>
                         <th>Nilai Rata-rata</th>
                         <th>Status</th>
@@ -65,7 +64,6 @@
                 <tbody>
                     {% for form in all_forms %}
                     <tr>
-                        <td>{{ form.user.username }}</td>
                         <td>{{ form.nama }}</td>
                         <td>{{ form.nilai_rata }}</td>
                         <td>
